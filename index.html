@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>進撃の巨人 — ATTACK ON TITAN</title>
+<meta name="description" content="進撃の巨人 — a scroll-driven tribute. The wall, the Colossal Titan, and the boy who became the storm." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@300;500;700;900&family=Oswald:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ══════════════════ PRELOADER ══════════════════ -->
+<div class="loader" id="loader">
+  <div class="loader__inner">
+    <svg class="loader__wings" viewBox="0 0 120 60" aria-hidden="true">
+      <use href="#wings"/>
+    </svg>
+    <div class="loader__glyph" id="loaderGlyph">進撃の巨人</div>
+    <div class="loader__bar"><span id="loaderFill"></span></div>
+    <div class="loader__meta">
+      <span id="loaderTask">調査兵団 · MOUNTING GEAR</span>
+      <span id="loaderPct">00</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ AMBIENT LAYERS ══════════════════ -->
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<canvas class="dust" id="dustCanvas" aria-hidden="true"></canvas>
+<div class="flash" id="globalFlash" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><i></i></div>
+
+<!-- shared SVG defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="wings">
+      <path d="M60 8 L60 52" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M58 14 C42 10 24 14 8 26 C24 24 34 28 46 36 C50 30 54 22 58 14 Z" fill="currentColor" opacity=".92"/>
+      <path d="M62 14 C78 10 96 14 112 26 C96 24 86 28 74 36 C70 30 66 22 62 14 Z" fill="currentColor" opacity=".55"/>
+      <path d="M60 40 C52 44 46 50 42 56 C52 52 56 52 60 53 C64 52 68 52 78 56 C74 50 68 44 60 40 Z" fill="currentColor" opacity=".75"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ══════════════════ FIXED CHROME ══════════════════ -->
+<header class="chrome" id="chrome">
+  <a class="chrome__mark" href="#top">
+    <svg viewBox="0 0 120 60" aria-hidden="true"><use href="#wings"/></svg>
+    <span>自由の翼</span>
+  </a>
+  <nav class="chrome__nav">
+    <a href="#wall"   data-jp="壁">THE WALL</a>
+    <a href="#walls"  data-jp="三重">THREE RINGS</a>
+    <a href="#eren"   data-jp="巨人">TRANSFORM</a>
+    <a href="#reveal" data-jp="二面">TWO FACES</a>
+    <a href="#end"    data-jp="自由">FREEDOM</a>
+  </nav>
+</header>
+
+<div class="rail rail--left" aria-hidden="true">
+  <span>調査兵団 · SURVEY CORPS · 壁の外へ · 845 → 854</span>
+</div>
+<div class="rail rail--right" aria-hidden="true">
+  <span id="railScroll">SCROLL 000%</span>
+</div>
+<div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+
+<div class="hint" id="hint">
+  <span class="hint__jp">下へ</span>
+  <span class="hint__line"></span>
+  <span class="hint__en">SCROLL — SOMETHING IS BEHIND THE WALL</span>
+</div>
+
+<main id="top">
+
+<!-- ══════════════════ ACT I · 壁 — COLOSSAL TITAN SCRUB ══════════════════ -->
+<section class="scrub" id="wall" data-scrub="wall" data-frames="71" data-vh="420">
+  <div class="scrub__sticky">
+    <canvas class="scrub__canvas" id="wallCanvas"></canvas>
+    <div class="scrub__tint" id="wallTint"></div>
+    <canvas class="scrub__steam" id="steamCanvas"></canvas>
+
+    <!-- title lockup, first beat only -->
+    <div class="lockup" id="lockup">
+      <p class="lockup__kicker" data-px="0.05">シガンシナ区 · 845年 · WALL MARIA</p>
+      <h1 class="lockup__jp" data-px="0.12">進撃の<span>巨人</span></h1>
+      <p class="lockup__en" data-px="0.20">A T T A C K &nbsp; O N &nbsp; T I T A N</p>
+      <p class="lockup__sub" data-px="0.26">「その日、人類は思い出した。」</p>
+    </div>
+
+    <!-- phase captions -->
+    <div class="phase" data-phase="0">
+      <h2 class="phase__jp">平穏</h2>
+      <p class="phase__en">ONE HUNDRED YEARS OF PEACE</p>
+      <p class="phase__sub">五十メートルの石。人類はその内側で、家畜のように安らかに眠っていた。</p>
+    </div>
+    <div class="phase" data-phase="1">
+      <h2 class="phase__jp">影</h2>
+      <p class="phase__en">SOMETHING IS BEHIND IT</p>
+      <p class="phase__sub">雷のような音。そして、壁の上に指がかかった。</p>
+    </div>
+    <div class="phase" data-phase="2">
+      <h2 class="phase__jp">超大型巨人</h2>
+      <p class="phase__en">THE COLOSSAL TITAN</p>
+      <p class="phase__sub">六十メートル。壁を越えて、人類は自分たちが檻の鳥だったと思い出した。</p>
+    </div>
+
+    <div class="scrub__hud">
+      <span class="scrub__hud-l">壁上観測 · WALL WATCH</span>
+      <span class="scrub__hud-r" id="wallReadout">FRAME 00 / 71</span>
+    </div>
+
+    <div class="shockwave" id="shockwave" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ══════════════════ SCROLL-VELOCITY MARQUEE ══════════════════ -->
+<section class="velocity" aria-hidden="true">
+  <div class="velocity__row" data-velocity="1">
+    <div class="velocity__track"><span>心臓を捧げよ ・ DEDICATE YOUR HEARTS ・ 心臓を捧げよ ・ DEDICATE YOUR HEARTS ・ </span></div>
+  </div>
+  <div class="velocity__row velocity__row--alt" data-velocity="-1">
+    <div class="velocity__track"><span>自由の翼 ・ WINGS OF FREEDOM ・ 自由の翼 ・ WINGS OF FREEDOM ・ </span></div>
+  </div>
+</section>
+
+
+
+<!-- ══════════════════ ACT II · 巨人化 — EREN TITAN SCRUB ══════════════════ -->
+<section class="scrub scrub--eren" id="eren" data-scrub="eren" data-frames="32" data-vh="360">
+  <div class="scrub__sticky">
+    <canvas class="scrub__canvas" id="erenCanvas"></canvas>
+    <div class="scrub__tint scrub__tint--eren" id="erenTint"></div>
+    <canvas class="scrub__bolts" id="boltCanvas"></canvas>
+
+    <div class="erenblock" id="erenblock">
+      <p class="erenblock__kicker" data-px="0.06">座標 · THE ATTACK TITAN</p>
+      <h2 class="erenblock__jp" data-decrypt="進撃の巨人">進撃の巨人</h2>
+      <p class="erenblock__en" data-decrypt="I  W I L L  K I L L  T H E M  A L L">I  W I L L  K I L L  T H E M  A L L</p>
+    </div>
+
+    <div class="phase phase--eren" data-phase="0">
+      <h2 class="phase__jp">誓い</h2>
+      <p class="phase__en">THE OATH</p>
+      <p class="phase__sub">「一匹残らず、駆逐してやる。」</p>
+    </div>
+    <div class="phase phase--eren" data-phase="1">
+      <h2 class="phase__jp">雷</h2>
+      <p class="phase__en">LIGHTNING</p>
+      <p class="phase__sub">噛みちぎった手のひらから、光が立ち上がる。</p>
+    </div>
+    <div class="phase phase--eren" data-phase="2">
+      <h2 class="phase__jp">巨人化</h2>
+      <p class="phase__en">HE STANDS UP BEHIND HIMSELF</p>
+      <p class="phase__sub">十五メートル。少年の背中から、彼自身より大きな怒りが立ち上がった。</p>
+    </div>
+
+    <div class="scrub__hud">
+      <span class="scrub__hud-l">生体反応 · VITAL TRACE</span>
+      <span class="scrub__hud-r" id="erenReadout">FRAME 00 / 32</span>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ══════════════════ ACT III · 二面 — TOP / BOTTOM REVEAL ══════════════════ -->
+<section class="reveal" id="reveal">
+  <div class="reveal__stage" id="revealStage">
+    <canvas class="reveal__canvas" id="revealCanvas"></canvas>
+
+    <div class="reveal__ui">
+      <div class="reveal__tl">
+        <span class="eyebrow">二つの顔 · TWO FACES</span>
+        <h2>少年と<br><span>悪魔</span></h2>
+        <p>Same eyes. Same boy. Move across him and watch which one the light finds.</p>
+      </div>
+      <div class="reveal__br">
+        <span class="eyebrow">座標 · COORDINATE</span>
+        <h3>ONE<br>BODY</h3>
+        <p>The one who devours, the one who is devoured — carried in the same ribcage since he was ten.</p>
+      </div>
+      <div class="reveal__hint" id="revealHint">▸ &nbsp;動かせ &nbsp;·&nbsp; MOVE ACROSS TO REVEAL&nbsp; ◂</div>
+      <div class="reveal__missing" id="revealMissing" hidden>
+        <b>bottom.jpg</b> not found — drop it in <code>site/assets/reveal/</code> and refresh.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="foot">
+  <div class="foot__row">
+    <span>調査兵団 · SURVEY CORPS</span>
+    <span>進撃の巨人 · ATTACK ON TITAN</span>
+    <span>845 — 854</span>
+  </div>
+</footer>
+
+</main>
+
+<div class="badge" id="badge">
+  <span class="badge__jp">壁</span>
+  <span class="badge__en">WALL MARIA</span>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
