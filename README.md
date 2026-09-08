@@ -1,64 +1,85 @@
-# 進撃の巨人 — ATTACK ON TITAN
+# 進撃の巨人 | Attack on Titan
 
-A scroll-driven tribute site. No build step, no dependencies — plain HTML/CSS/JS.
+> A cinematic, scroll-driven tribute to the walls, the titan, and the will to move forward.
 
-## Run it
+**Live experience:** [aura-attack-on-titan-sayed-sadiq.vercel.app](https://aura-attack-on-titan-sayed-sadiq.vercel.app/)
 
-```
-cd site
-npx serve .          # or: python -m http.server 5173
-```
+Created and designed by **Sayed Sadiq** under the **AURA** identity.
 
-Then open the printed URL. (Opening `index.html` directly with `file://` also works,
-but a local server is better — image decoding and caching behave properly.)
+## The Experience
 
-## The three acts
+This is a dependency-free visual story built with plain HTML, CSS, and JavaScript. Scroll through three acts where image sequences, motion, light, and typography build the atmosphere of Attack on Titan.
 
-| # | Section | Effect |
-|---|---------|--------|
-| I  | `#wall`   | 71-frame scroll-scrub — the Colossal Titan rising behind Wall Maria. Screen shake, chromatic ghosting, steam, and a shockwave at the breach. |
-| II | `#eren`   | 32-frame scroll-scrub — the Attack Titan standing up out of Eren. Procedural lightning bolts and flash frames tied to scroll progress. |
-| III| `#reveal` | Two stacked plates (`assets/reveal/bottom.jpg` + `top.jpg`) with a trailing, feathered spotlight that carves one out of the other. |
+### Act I: The Wall
 
-Between them: a scroll-velocity marquee, a four-layer parallax wall field,
-a counted-up stat ledger, and a WebGL aurora finale.
+71 scroll-scrubbed frames bring the Colossal Titan over Wall Maria. Steam, screen shake, chromatic ghosting, and a breach shockwave respond to the scroll position.
 
-## bottom.jpg
+### Act II: Transform
 
-`assets/reveal/top.jpg` is the image you supplied (revealed under the cursor).
-`assets/reveal/bottom.jpg` is the always-visible base plate — **drop it in and refresh.**
+32 frames capture the Attack Titan rising from Eren, accompanied by procedural lightning and flash moments tied directly to progress.
 
-Until it exists the site derives a desaturated, blood-tinted stand-in from `top.jpg`
-so the act still reads, and shows a small note on the section. Best results if
-`bottom.jpg` matches `top.jpg`'s framing (1600×900, same crop and focal point) —
-the reveal is most convincing when the two plates are pixel-aligned.
+### Act III: Two Faces
 
-## reactbits.dev components
+A feathered spotlight moves across two aligned image plates, revealing the contrast between the boy and the titan beneath the same gaze.
 
-Ported to dependency-free vanilla JS in `main.js` (each marked with a banner comment):
+Between the acts, the site adds velocity-driven typography, layered parallax, animated counters, and a WebGL aurora finale.
 
-`Aurora` (raw WebGL) · `ScrollVelocity` · `DecryptedText` · `SplitText`
-`CountUp` · `ClickSpark` · `Magnet` · `TiltedCard` · `SpotlightCard`
+## Highlights
 
-## Assets
+- No framework, build step, or external runtime dependency
+- Responsive desktop and mobile frame sequences
+- Canvas-based animation for smooth visual control
+- WebGL aurora finale and procedural effects
+- Reduced-motion support for a calmer static experience
+- Japanese and English typography inspired by the source world
 
-```
-assets/frames/wall     71 × 1280×720   desktop
-assets/frames/wall-sm  71 ×  720×405   < 820px viewports
-assets/frames/eren     32 × 1280×720
-assets/frames/eren-sm  32 ×  720×405
-assets/reveal/top.jpg
-assets/reveal/bottom.jpg   ← you supply
+## Run Locally
+
+From the repository root, start any static server:
+
+```bash
+npx serve .
 ```
 
-Regenerate from the source PNG zips with `../tools/convert.ps1` if you re-render frames.
+Or use Python:
 
-## Tuning
+```bash
+python -m http.server 5173
+```
 
-- Scroll length per act: the `data-vh` attribute on each `<section class="scrub">`.
-- Phase caption cut points and shake onset: the `phases` / `shakeFrom` options
-  passed to `new Scrub(...)` in `main.js`.
-- Spotlight size and trail length: `radius` / `TRAIL` in the reveal block.
+Then open the local URL shown in your terminal. A local server is recommended so image loading and caching behave consistently.
 
-`prefers-reduced-motion` removes the scrubbing, shake, cursor, lightning, and dust,
-and renders each sequence's final frame statically.
+## Project Structure
+
+```text
+index.html                 Main experience and section structure
+style.css                  Visual system, layout, and responsive styling
+main.js                    Scroll choreography and canvas effects
+assets/frames/wall         71 desktop Wall Maria frames
+assets/frames/wall-sm      71 mobile Wall Maria frames
+assets/frames/eren         32 desktop transformation frames
+assets/frames/eren-sm      32 mobile transformation frames
+assets/reveal/top.jpg      Foreground reveal plate
+assets/reveal/bottom.jpg   Base reveal plate
+```
+
+For the strongest reveal effect, `top.jpg` and `bottom.jpg` should share the same framing and focal point. If the base plate is unavailable, the experience derives a tinted fallback from `top.jpg`.
+
+## Customization
+
+- Change the scroll distance for each act with the `data-vh` attribute on scrub sections.
+- Adjust phase timing and shake onset through the `Scrub` options in `main.js`.
+- Tune the reveal spotlight radius and trail length in the reveal effect configuration.
+
+## Creator
+
+**Sayed Sadiq**
+
+- [GitHub](https://github.com/SayedSadiq45)
+- [LinkedIn](https://www.linkedin.com/in/sayed-sadiq45/)
+
+## License
+
+Copyright (c) 2026 Sayed Sadiq.
+
+Released under the [MIT License](LICENSE).

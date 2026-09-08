@@ -134,7 +134,14 @@ em{ font-style:normal; color:var(--ember); }
 }
 .chrome__nav a:hover{ opacity:1; }
 .chrome__nav a:hover::before{ opacity:1; transform:translate(-50%,0); }
+.chrome__creator{
+  font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--gold);
+  white-space:nowrap; transition:color .3s;
+}
+.chrome__creator span{ color:var(--ember); }
+.chrome__creator:hover{ color:var(--bone); }
 @media (max-width:760px){ .chrome__nav a:nth-child(2),.chrome__nav a:nth-child(4){ display:none; } }
+@media (max-width:600px){ .chrome__creator{ display:none; } }
 
 .rail{
   position:fixed; top:50%; z-index:800; pointer-events:none;
@@ -517,6 +524,22 @@ em{ font-style:normal; color:var(--ember); }
   display:block; margin-top:26px; font-family:var(--ser); font-style:italic;
   font-size:clamp(14px,1.8vw,19px); color:var(--bone-dim);
 }
+.finale__name{ color:var(--ember); text-shadow:0 0 28px rgba(212,73,31,.3); }
+.creator-links{
+  display:flex; justify-content:center; gap:12px; flex-wrap:wrap;
+  margin-top:42px;
+}
+.creator-link{
+  position:relative; display:grid; grid-template-columns:1fr auto; gap:5px 24px;
+  min-width:min(270px, 42vw); padding:16px 18px; text-align:left;
+  border:1px solid rgba(233,226,210,.22); background:rgba(7,8,10,.34);
+  transition:border-color .3s, background .3s, transform .3s var(--ease);
+}
+.creator-link:hover{ border-color:var(--ember); background:rgba(142,27,27,.22); transform:translateY(-4px); }
+.creator-link__label{ font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); }
+.creator-link__url{ font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--bone-dim); }
+.creator-link__arrow{ grid-column:2; grid-row:1 / span 2; align-self:center; font-size:20px; color:var(--ember); }
+.creator-link:focus-visible{ outline:1px solid var(--gold); outline-offset:5px; }
 .finale__cta{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
 .btn{
   position:relative; isolation:isolate; overflow:hidden;
@@ -552,6 +575,10 @@ em{ font-style:normal; color:var(--ember); }
 .foot__row{
   display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap;
   font-family:var(--mono); font-size:9px; letter-spacing:.28em; color:var(--bone-dim);
+}
+@media (max-width:600px){
+  .creator-link{ min-width:min(330px, 88vw); }
+  .creator-link__url{ font-size:9px; }
 }
 
 /* ══════════════════ REDUCED MOTION ══════════════════ */
